@@ -77,7 +77,7 @@ def main() -> None:
     print(f"Warm-up: {WARMUP_RUNS} runs | Measured: {BENCHMARK_RUNS} runs")
     print(f"p50 latency: {p50:.4f} ms")
     print(f"p95 latency: {p95:.4f} ms")
-    assert p95 < 100.0, f"p95 ({p95:.4f} ms) vuot nguong 100 ms!"
+    assert p95 < 100.0, f"p95 ({p95:.4f} ms) vuot nguong 100 ms"
     print("Result: PASS (p95 < 100 ms)")
 
 
