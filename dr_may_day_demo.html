@@ -1,0 +1,1886 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dr. MayDay — Hệ thống Quản lý Lâm sàng &amp; Sàng lọc Phản vệ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #faf7f7;
+      color: #1f2937;
+    }
+    .sidebar-scroll::-webkit-scrollbar {
+      width: 5px;
+    }
+    .sidebar-scroll::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.18);
+      border-radius: 9999px;
+    }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: #fff; }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex antialiased">
+
+  <!-- SIDEBAR ĐIỀU HƯỚNG (ĐÚNG 12 CHỨC NĂNG) -->
+  <aside class="w-64 bg-[#4c1320] text-rose-100 flex flex-col flex-shrink-0 no-print select-none shadow-lg">
+    <!-- Logo & Tên hệ thống -->
+    <div class="px-5 py-4 border-b border-rose-900/60 flex items-center gap-3">
+      <div class="w-9 h-9 rounded-lg bg-[#881337] border border-rose-400/30 flex items-center justify-center text-white font-bold text-lg shadow-sm">
+        +
+      </div>
+      <div class="min-w-0">
+        <div class="font-bold text-white text-base leading-tight truncate">Dr. MayDay</div>
+        <div id="sidebar-clinic-name" class="text-[11px] text-rose-200/80 truncate">Khoa Bệnh Mày Đay</div>
+      </div>
+    </div>
+
+    <!-- Thẻ người dùng hiện tại -->
+    <div class="px-4 py-3 border-b border-rose-900/60">
+      <div class="bg-[#3d0e19] rounded-xl p-2.5 flex items-center justify-between gap-2 border border-rose-800/40">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div id="sidebar-avatar" class="w-8 h-8 rounded-full bg-[#9f1239] text-white font-semibold text-xs flex items-center justify-center flex-shrink-0">
+            BS
+          </div>
+          <div class="min-w-0">
+            <div id="sidebar-user-name" class="text-xs font-semibold text-white truncate">BS. Nguyễn Minh Quân</div>
+            <div id="sidebar-user-role" class="text-[11px] text-rose-200/75 truncate">Bác sĩ điều trị</div>
+          </div>
+        </div>
+        <span id="sidebar-role-badge" class="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-rose-900/90 text-rose-200 border border-rose-700/50">
+          BS
+        </span>
+      </div>
+    </div>
+
+    <!-- Danh sách 12 chức năng -->
+    <nav id="sidebar-nav" class="flex-1 overflow-y-auto sidebar-scroll px-3 py-3 space-y-4 text-[13px]">
+      <!-- Nhóm 1: TỔNG QUAN -->
+      <div>
+        <div class="px-3 mb-1.5 text-[10px] font-semibold tracking-wider uppercase text-rose-300/60">Tổng quan</div>
+        <button data-tab="overview" onclick="switchTab('overview')" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition text-left">
+          <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+          <span>Tổng quan</span>
+        </button>
+      </div>
+
+      <!-- Nhóm 2: BỆNH NHÂN -->
+      <div>
+        <div class="px-3 mb-1.5 text-[10px] font-semibold tracking-wider uppercase text-rose-300/60">Bệnh nhân</div>
+        <div class="space-y-1">
+          <button data-tab="patients" onclick="switchTab('patients')" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition text-left">
+            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span>Danh sách bệnh nhân</span>
+          </button>
+          <button data-tab="records" onclick="switchTab('records')" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition text-left">
+            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <span>Bệnh án</span>
+          </button>
+          <button data-tab="uas7" onclick="switchTab('uas7')" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition text-left">
+            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+            <span>Theo dõi UAS7</span>
+          </button>
+          <button data-tab="photos" onclick="switchTab('photos')" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition text-left">
+            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span>Ảnh tổn thương</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Nhóm 3: LÂM SÀNG -->
+      <div>
+        <div class="px-3 mb-1.5 text-[10px] font-semibold tracking-wider uppercase text-rose-300/60">Lâm sàng</div>
+        <div class="space-y-1">
+          <button data-tab="prescriptions" onclick="switchTab('prescriptions')" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition text-left">
+            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="13" y2="13"/><line x1="7" y1="17" x2="11" y2="17"/></svg>
+            <span>Đơn thuốc điện tử</span>
+          </button>
+          <button data-tab="labs" onclick="switchTab('labs')" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition text-left">
+            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            <span>Xét nghiệm &amp; CDHA</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Nhóm 4: QUẢN TRỊ -->
+      <div>
+        <div class="px-3 mb-1.5 text-[10px] font-semibold tracking-wider uppercase text-rose-300/60">Quản trị</div>
+        <div class="space-y-1">
+          <button data-tab="reports" onclick="switchTab('reports')" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition text-left">
+            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            <span>Báo cáo &amp; Thống kê</span>
+          </button>
+          <button data-tab="staff" onclick="switchTab('staff')" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition text-left">
+            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+            <span>Nhân viên y tế</span>
+          </button>
+          <button data-tab="system" onclick="switchTab('system')" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition text-left">
+            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span>Quản lý hệ thống</span>
+          </button>
+          <button data-tab="templates" onclick="switchTab('templates')" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition text-left">
+            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+            <span>Mẫu phiếu khám</span>
+          </button>
+          <button data-tab="settings" onclick="switchTab('settings')" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition text-left">
+            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            <span>Cài đặt hệ thống</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- KHUNG NỘI DUNG CHÍNH -->
+  <div class="flex-1 flex flex-col min-w-0">
+    <!-- Thanh Header trên cùng -->
+    <header class="bg-white border-b border-rose-100 px-6 py-3.5 flex items-center justify-between gap-4 no-print">
+      <div>
+        <h1 id="header-title" class="text-lg font-bold text-slate-900 leading-tight">Tổng quan</h1>
+        <p id="header-date" class="text-xs text-slate-500 mt-0.5">Thứ Ba, 17/11/2026</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-rose-50/70 border border-rose-100 text-xs text-rose-900 font-medium">
+          <span class="w-2 h-2 rounded-full bg-rose-600 animate-pulse"></span>
+          <span id="live-clock">20:15:00</span>
+        </div>
+        <button onclick="showToast('Hệ thống hoạt động ổn định. Không có cảnh báo tồn đọng.')" class="w-9 h-9 rounded-lg border border-rose-100 bg-white hover:bg-rose-50 flex items-center justify-center text-slate-600 relative" title="Thông báo">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="w-2 h-2 rounded-full bg-rose-600 absolute top-2 right-2"></span>
+        </button>
+        <div class="flex items-center gap-2.5 pl-2 border-l border-rose-100">
+          <div id="header-avatar" class="w-8 h-8 rounded-full bg-[#881337] text-white text-xs font-semibold flex items-center justify-center">BS</div>
+          <div class="hidden md:block text-left">
+            <div id="header-user-name" class="text-xs font-semibold text-slate-800">BS. Nguyễn Minh Quân</div>
+            <div id="header-user-role" class="text-[11px] text-slate-500">Bác sĩ điều trị</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Vùng hiển thị nội dung từng chức năng -->
+    <main id="main-view" class="flex-1 p-6 overflow-y-auto space-y-6"></main>
+  </div>
+
+  <!-- MODAL THÊM BỆNH NHÂN MỚI -->
+  <div id="modal-add-patient" class="fixed inset-0 bg-slate-900/40 hidden items-center justify-center z-50 p-4 no-print">
+    <div class="bg-white rounded-2xl max-w-md w-full border border-rose-100 shadow-xl overflow-hidden">
+      <div class="px-5 py-4 bg-rose-50/70 border-b border-rose-100 flex items-center justify-between">
+        <h3 class="font-bold text-slate-900 text-sm">Tiếp nhận hồ sơ bệnh nhân mới</h3>
+        <button onclick="closeModal('modal-add-patient')" class="text-slate-400 hover:text-slate-700 text-lg leading-none">&times;</button>
+      </div>
+      <form onsubmit="handleAddPatient(event)" class="p-5 space-y-3.5 text-sm">
+        <div>
+          <label class="block text-xs font-medium text-slate-700 mb-1">Họ và tên bệnh nhân *</label>
+          <input id="new-pt-name" required type="text" placeholder="Ví dụ: Trần Thị Mai Anh" class="w-full px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:border-rose-600" />
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-medium text-slate-700 mb-1">Tuổi *</label>
+            <input id="new-pt-age" required type="number" min="0" max="120" value="32" class="w-full px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:border-rose-600" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-700 mb-1">Giới tính</label>
+            <select id="new-pt-gender" class="w-full px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:border-rose-600">
+              <option value="Nữ">Nữ</option>
+              <option value="Nam">Nam</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-700 mb-1">Chẩn đoán ban đầu *</label>
+          <input id="new-pt-diag" required type="text" value="Mày đay mạn tính tự phát (CSU)" class="w-full px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:border-rose-600" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-700 mb-1">Tiền sử dị ứng thuốc / thức ăn</label>
+          <input id="new-pt-allergy" type="text" placeholder="Ghi 'Không' nếu chưa ghi nhận" value="Không" class="w-full px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:border-rose-600" />
+        </div>
+        <div class="pt-2 flex justify-end gap-2">
+          <button type="button" onclick="closeModal('modal-add-patient')" class="px-4 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-medium">Hủy</button>
+          <button type="submit" class="px-4 py-2 rounded-lg bg-[#881337] hover:bg-[#70102d] text-white text-xs font-semibold">Lưu hồ sơ</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL XEM MẪU PHIẾU KHÁM -->
+  <div id="modal-template" class="fixed inset-0 bg-slate-900/40 hidden items-center justify-center z-50 p-4 no-print">
+    <div class="bg-white rounded-2xl max-w-lg w-full border border-rose-100 shadow-xl overflow-hidden">
+      <div class="px-5 py-4 bg-rose-50/70 border-b border-rose-100 flex items-center justify-between">
+        <h3 id="tpl-modal-title" class="font-bold text-slate-900 text-sm">Chi tiết mẫu phiếu khám</h3>
+        <button onclick="closeModal('modal-template')" class="text-slate-400 hover:text-slate-700 text-lg leading-none">&times;</button>
+      </div>
+      <div id="tpl-modal-body" class="p-5 text-sm text-slate-700 space-y-3"></div>
+      <div class="px-5 py-3.5 bg-slate-50 border-t border-slate-100 flex justify-end gap-2">
+        <button onclick="closeModal('modal-template')" class="px-4 py-2 rounded-lg border border-slate-200 text-slate-600 text-xs font-medium">Đóng</button>
+        <button onclick="closeModal('modal-template'); switchTab('records');" class="px-4 py-2 rounded-lg bg-[#881337] text-white text-xs font-semibold">Áp dụng vào Bệnh án</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- THÔNG BÁO NỔI (TOAST) -->
+  <div id="toast" class="fixed bottom-5 right-5 bg-[#4c1320] text-white text-xs font-medium px-4 py-3 rounded-xl shadow-lg border border-rose-700/50 hidden z-50 no-print"></div>
+
+  <script>
+    // ================= DỮ LIỆU KHỞI TẠO HỆ THỐNG =================
+    const state = {
+      currentTab: 'overview',
+      selectedPatientId: 'BN-001',
+      settings: {
+        clinicName: 'Khoa Bệnh Mày Đay — BV Da liễu TW',
+        uas7HighThreshold: 28,
+        allergyAlertEnabled: true,
+        anonymizeExport: true,
+        roleMode: 'doctor' // 'doctor' | 'admin'
+      },
+      patients: [
+        {
+          id: 'BN-001',
+          name: 'Lê Thị Thu Hà',
+          age: 29,
+          gender: 'Nữ',
+          diagnosis: 'Mày đay mạn tính tự phát (CSU)',
+          allergy: 'Dị ứng Aspirin, Hải sản',
+          uas7: 26,
+          uas7Days: [
+            { day: 'Ngày 1', wheal: 2, itch: 2 },
+            { day: 'Ngày 2', wheal: 2, itch: 2 },
+            { day: 'Ngày 3', wheal: 2, itch: 2 },
+            { day: 'Ngày 4', wheal: 2, itch: 1 },
+            { day: 'Ngày 5', wheal: 2, itch: 2 },
+            { day: 'Ngày 6', wheal: 1, itch: 2 },
+            { day: 'Ngày 7', wheal: 2, itch: 2 }
+          ],
+          anaphylaxisStatus: 'THEO_DOI',
+          lastVisit: '17/11/2026',
+          records: [
+            {
+              date: '17/11/2026',
+              bp: '115/75 mmHg',
+              result: 'THEO_DOI',
+              rule: 'Chưa đủ tiêu chuẩn phản vệ',
+              note: 'Sẩn phù rải rác vùng cẳng tay và lưng, không khó thở, huyết áp ổn định.'
+            }
+          ]
+        },
+        {
+          id: 'BN-002',
+          name: 'Phạm Hoàng Nam',
+          age: 41,
+          gender: 'Nam',
+          diagnosis: 'Mày đay cấp nghi do thuốc kháng viêm',
+          allergy: 'Dị ứng NSAIDs (Ibuprofen)',
+          uas7: 33,
+          uas7Days: [
+            { day: 'Ngày 1', wheal: 3, itch: 3 },
+            { day: 'Ngày 2', wheal: 3, itch: 2 },
+            { day: 'Ngày 3', wheal: 2, itch: 3 },
+            { day: 'Ngày 4', wheal: 3, itch: 2 },
+            { day: 'Ngày 5', wheal: 2, itch: 2 },
+            { day: 'Ngày 6', wheal: 2, itch: 2 },
+            { day: 'Ngày 7', wheal: 2, itch: 2 }
+          ],
+          anaphylaxisStatus: 'PHAN_VE',
+          lastVisit: '17/11/2026',
+          records: [
+            {
+              date: '17/11/2026',
+              bp: '105/70 mmHg',
+              result: 'PHAN_VE',
+              rule: 'R02-PV (Tiếp xúc dị nguyên + Da/niêm mạc + Hô hấp)',
+              note: 'Nổi ban đỏ toàn thân kèm khò khè nhẹ sau uống thuốc giảm đau 20 phút.'
+            }
+          ]
+        },
+        {
+          id: 'BN-003',
+          name: 'Nguyễn Ngọc Bảo Trân',
+          age: 24,
+          gender: 'Nữ',
+          diagnosis: 'Mày đay vật lý (Chứng vẽ nổi)',
+          allergy: 'Không',
+          uas7: 11,
+          uas7Days: [
+            { day: 'Ngày 1', wheal: 1, itch: 1 },
+            { day: 'Ngày 2', wheal: 1, itch: 1 },
+            { day: 'Ngày 3', wheal: 1, itch: 0 },
+            { day: 'Ngày 4', wheal: 1, itch: 1 },
+            { day: 'Ngày 5', wheal: 1, itch: 1 },
+            { day: 'Ngày 6', wheal: 0, itch: 1 },
+            { day: 'Ngày 7', wheal: 1, itch: 0 }
+          ],
+          anaphylaxisStatus: 'THEO_DOI',
+          lastVisit: '16/11/2026',
+          records: [
+            {
+              date: '16/11/2026',
+              bp: '110/70 mmHg',
+              result: 'THEO_DOI',
+              rule: 'Chưa đủ tiêu chuẩn phản vệ',
+              note: 'Đáp ứng tốt với kháng histamin H1 thế hệ 2 liều chuẩn.'
+            }
+          ]
+        },
+        {
+          id: 'BN-004',
+          name: 'Đặng Quốc Việt',
+          age: 54,
+          gender: 'Nam',
+          diagnosis: 'Mày đay mạn tính kèm theo dõi phản vệ',
+          allergy: 'Dị ứng Penicillin',
+          uas7: 36,
+          uas7Days: [
+            { day: 'Ngày 1', wheal: 3, itch: 3 },
+            { day: 'Ngày 2', wheal: 3, itch: 3 },
+            { day: 'Ngày 3', wheal: 3, itch: 3 },
+            { day: 'Ngày 4', wheal: 3, itch: 2 },
+            { day: 'Ngày 5', wheal: 2, itch: 3 },
+            { day: 'Ngày 6', wheal: 2, itch: 2 },
+            { day: 'Ngày 7', wheal: 2, itch: 2 }
+          ],
+          anaphylaxisStatus: 'SOC_PHAN_VE',
+          lastVisit: '17/11/2026',
+          records: [
+            {
+              date: '17/11/2026',
+              bp: '82/50 mmHg (Nền: 130 mmHg)',
+              result: 'SOC_PHAN_VE',
+              rule: 'R-SOC (Phản vệ kèm tụt huyết áp tâm thu < 90 mmHg)',
+              note: 'Chóng mặt, tụt huyết áp sau tiêm kháng sinh; đã xử trí cấp cứu ổn định.'
+            }
+          ]
+        }
+      ],
+      photos: [
+        {
+          id: 'IMG-01',
+          patientId: 'BN-001',
+          region: 'Cẳng tay trái',
+          erythema: 'Trung bình',
+          date: '17/11/2026',
+          note: 'Mảng sẩn phù kích thước 1–2 cm, viền đỏ nhẹ, ngứa nhiều về tối.',
+          dataUrl: null,
+          spots: [[38, 42, 18], [62, 55, 14], [48, 68, 12]]
+        },
+        {
+          id: 'IMG-02',
+          patientId: 'BN-002',
+          region: 'Vùng lưng trên',
+          erythema: 'Nặng',
+          date: '17/11/2026',
+          note: 'Ban đỏ lan tỏa thành mảng lớn, phù nề rõ.',
+          dataUrl: null,
+          spots: [[30, 35, 22], [58, 40, 25], [45, 62, 20], [70, 65, 15]]
+        }
+      ],
+      prescriptions: [
+        {
+          id: 'DT-2026-01',
+          patientId: 'BN-001',
+          date: '17/11/2026',
+          doctor: 'BS. Nguyễn Minh Quân',
+          items: [
+            { name: 'Bilastine 20mg', dose: 'Sáng 1 viên, Tối 1 viên (uống xa bữa ăn)', days: 14 },
+            { name: 'Kem dưỡng ẩm phục hồi hàng rào da', dose: 'Thoa mỏng vùng da khô ngứa 2 lần/ngày', days: 14 }
+          ]
+        },
+        {
+          id: 'DT-2026-02',
+          patientId: 'BN-003',
+          date: '16/11/2026',
+          doctor: 'BS. Nguyễn Minh Quân',
+          items: [
+            { name: 'Fexofenadine 180mg', dose: 'Sáng 1 viên sau ăn', days: 14 }
+          ]
+        }
+      ],
+      labs: [
+        { id: 'XN-101', patientId: 'BN-001', name: 'Tổng phân tích tế bào máu ngoại vi (CBC)', type: 'Xét nghiệm', date: '17/11/2026', status: 'Đã có kết quả', result: 'Bạch cầu ái toan (Eos): 4.8% — Trong giới hạn bình thường' },
+        { id: 'XN-102', patientId: 'BN-001', name: 'Định lượng IgE toàn phần huyết thanh', type: 'Xét nghiệm', date: '17/11/2026', status: 'Đã có kết quả', result: '185 IU/mL (Tăng nhẹ)' },
+        { id: 'XN-103', patientId: 'BN-002', name: 'Định lượng CRP & Tốc độ máu lắng (ESR)', type: 'Xét nghiệm', date: '17/11/2026', status: 'Đã có kết quả', result: 'CRP: 14.2 mg/L (Phản ứng viêm cấp)' },
+        { id: 'XN-104', patientId: 'BN-004', name: 'Điện tâm đồ & Siêu âm ổ bụng tổng quát', type: 'CĐHA', date: '17/11/2026', status: 'Đang thực hiện', result: 'Chờ phòng CĐHA trả kết quả' }
+      ],
+      staff: [
+        { id: 'NV-01', name: 'BS. Nguyễn Minh Quân', role: 'Bác sĩ điều trị', specialty: 'Dị ứng - Miễn dịch lâm sàng', status: 'Đang trực' },
+        { id: 'NV-02', name: 'ThS.BS. Trần Thu Trang', role: 'Bác sĩ điều trị', specialty: 'Da liễu tổng quát', status: 'Đang trực' },
+        { id: 'NV-03', name: 'ĐD. Lê Thị Hạnh', role: 'Điều dưỡng', specialty: 'Chăm sóc & Theo dõi UAS7', status: 'Đang trực' },
+        { id: 'NV-04', name: 'KS. Vũ Đức Anh', role: 'Quản trị viên', specialty: 'Vận hành hệ thống & Dữ liệu', status: 'Đang trực' }
+      ],
+      templates: [
+        {
+          id: 'TPL-01',
+          title: 'Phiếu khám mày đay mạn tính lần đầu',
+          code: 'BM-DL-01',
+          desc: 'Đánh giá thời gian khởi phát, tần suất sẩn phù, yếu tố kích phát vật lý và tiền sử dị ứng thuốc.',
+          fields: ['Thời gian mắc bệnh (> 6 tuần)', 'Tiền sử dị ứng thuốc / thức ăn', 'Đánh giá tuyến giáp & tự miễn', 'Chỉ số UAS7 nền']
+        },
+        {
+          id: 'TPL-02',
+          title: 'Bảng kiểm sàng lọc nguy cơ phản vệ (2 tầng)',
+          code: 'BM-CC-02',
+          desc: 'Sàng lọc nhanh phản vệ và sốc phản vệ theo biểu hiện da/niêm mạc, hô hấp, tuần hoàn, tiêu hóa và huyết áp tâm thu.',
+          fields: ['Tuổi & Huyết áp tâm thu hiện tại / nền', 'Tiếp xúc dị nguyên nghi ngờ & đường tiếp xúc', 'Tổn thương da/niêm mạc, hô hấp, tuần hoàn, tiêu hóa nặng', 'Phân tầng: Theo dõi / Phản vệ / Sốc phản vệ']
+        },
+        {
+          id: 'TPL-03',
+          title: 'Phiếu tái khám & theo dõi điểm UAS7',
+          code: 'BM-DL-03',
+          desc: 'Theo dõi đáp ứng điều trị mỗi 2–4 tuần dựa trên nhật ký sẩn phù và mức độ ngứa 7 ngày.',
+          fields: ['Điểm sẩn phù (0–3/ngày)', 'Điểm ngứa (0–3/ngày)', 'Tổng điểm UAS7 (0–42)', 'Điều chỉnh bậc điều trị kháng histamin']
+        },
+        {
+          id: 'TPL-04',
+          title: 'Phiếu chỉ định cận lâm sàng mày đay',
+          code: 'BM-XN-04',
+          desc: 'Bộ xét nghiệm cơ bản loại trừ nguyên nhân nhiễm trùng, tự miễn và bệnh lý tuyến giáp.',
+          fields: ['Công thức máu (CBC)', 'CRP / ESR', 'IgE toàn phần & Anti-TPO', 'Test huyết thanh tự thân (ASST)']
+        }
+      ],
+      auditLogs: [
+        { time: '17/11/2026 20:05:12', uuid: '8f14e45f-ea9b-4d12-9a21-001', action: 'Sàng lọc phản vệ (BN-004)', status: 'CLASSIFIED_SOC_PHAN_VE' },
+        { time: '17/11/2026 19:48:30', uuid: '8f14e45f-ea9b-4d12-9a21-001', action: 'Sàng lọc phản vệ (BN-002)', status: 'CLASSIFIED_PHAN_VE' },
+        { time: '17/11/2026 19:20:05', uuid: '8f14e45f-ea9b-4d12-9a21-001', action: 'Phát hành đơn thuốc (BN-001)', status: 'PRESCRIPTION_ISSUED' },
+        { time: '17/11/2026 18:55:41', uuid: '8f14e45f-ea9b-4d12-9a21-001', action: 'Cập nhật điểm UAS7 (BN-001)', status: 'UAS7_UPDATED' }
+      ]
+    };
+
+    // ================= HÀM TIỆN ÍCH & ĐỒNG HỒ =================
+    function getSelectedPatient() {
+      return state.patients.find(p => p.id === state.selectedPatientId) || state.patients[0];
+    }
+
+    function addAuditLog(action, status) {
+      const now = new Date();
+      const pad = n => String(n).padStart(2, '0');
+      const ts = `${pad(now.getDate())}/${pad(now.getMonth() + 1)}/${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+      state.auditLogs.unshift({
+        time: ts,
+        uuid: state.settings.roleMode === 'admin' ? 'a901c77d-11b4-4e89-8012-adm' : '8f14e45f-ea9b-4d12-9a21-001',
+        action,
+        status
+      });
+    }
+
+    function showToast(msg) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.remove('hidden');
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => el.classList.add('hidden'), 3200);
+    }
+
+    function openModal(id) {
+      const el = document.getElementById(id);
+      el.classList.remove('hidden');
+      el.classList.add('flex');
+    }
+
+    function closeModal(id) {
+      const el = document.getElementById(id);
+      el.classList.add('hidden');
+      el.classList.remove('flex');
+    }
+
+    function updateClock() {
+      const now = new Date();
+      const pad = n => String(n).padStart(2, '0');
+      const clockEl = document.getElementById('live-clock');
+      if (clockEl) {
+        clockEl.textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+      }
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    function uas7Badge(score) {
+      if (score >= state.settings.uas7HighThreshold) {
+        return `<span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-rose-100 text-rose-800 border border-rose-200">Nặng (${score}/42)</span>`;
+      }
+      if (score >= 16) {
+        return `<span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-amber-100 text-amber-800 border border-amber-200">Trung bình (${score}/42)</span>`;
+      }
+      if (score >= 7) {
+        return `<span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-sky-100 text-sky-800 border border-sky-200">Nhẹ (${score}/42)</span>`;
+      }
+      return `<span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">Kiểm soát tốt (${score}/42)</span>`;
+    }
+
+    function anaphylaxisBadge(status) {
+      if (status === 'SOC_PHAN_VE') {
+        return `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-red-700 text-white">Sốc phản vệ</span>`;
+      }
+      if (status === 'PHAN_VE') {
+        return `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-rose-100 text-rose-800 border border-rose-300">Phản vệ</span>`;
+      }
+      return `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-slate-100 text-slate-700 border border-slate-200">Theo dõi</span>`;
+    }
+
+    // ================= ĐIỀU HƯỚNG 12 CHỨC NĂNG =================
+    const TAB_TITLES = {
+      overview: 'Tổng quan',
+      patients: 'Danh sách bệnh nhân',
+      records: 'Bệnh án & Sàng lọc phản vệ',
+      uas7: 'Theo dõi điểm hoạt động mày đay (UAS7)',
+      photos: 'Ảnh tổn thương lâm sàng',
+      prescriptions: 'Đơn thuốc điện tử',
+      labs: 'Xét nghiệm & Chẩn đoán hình ảnh',
+      reports: 'Báo cáo & Thống kê',
+      staff: 'Nhân viên y tế',
+      system: 'Quản lý hệ thống & Nhật ký kiểm toán',
+      templates: 'Mẫu phiếu khám chuyên khoa',
+      settings: 'Cài đặt hệ thống'
+    };
+
+    function switchTab(tab) {
+      state.currentTab = tab;
+      document.getElementById('header-title').textContent = TAB_TITLES[tab] || 'Tổng quan';
+
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        const active = btn.dataset.tab === tab;
+        if (active) {
+          btn.className = 'nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition text-left bg-[#7f1d32] text-white font-semibold border-l-4 border-rose-300 shadow-sm';
+        } else {
+          btn.className = 'nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition text-left text-rose-100/80 hover:bg-[#5e1727] hover:text-white';
+        }
+      });
+
+      const renderers = {
+        overview: renderOverview,
+        patients: renderPatients,
+        records: renderRecords,
+        uas7: renderUAS7,
+        photos: renderPhotos,
+        prescriptions: renderPrescriptions,
+        labs: renderLabs,
+        reports: renderReports,
+        staff: renderStaff,
+        system: renderSystem,
+        templates: renderTemplates,
+        settings: renderSettings
+      };
+      (renderers[tab] || renderOverview)();
+    }
+
+    // ================= 1. TỔNG QUAN =================
+    function renderOverview() {
+      const totalPt = state.patients.length;
+      const severeCount = state.patients.filter(p => p.uas7 >= state.settings.uas7HighThreshold || p.anaphylaxisStatus !== 'THEO_DOI').length;
+      const rxCount = state.prescriptions.length;
+      const staffCount = state.staff.filter(s => s.status === 'Đang trực').length;
+
+      const cControlled = state.patients.filter(p => p.uas7 <= 6).length;
+      const cMild = state.patients.filter(p => p.uas7 >= 7 && p.uas7 <= 15).length;
+      const cMod = state.patients.filter(p => p.uas7 >= 16 && p.uas7 <= 27).length;
+      const cSevere = state.patients.filter(p => p.uas7 >= 28).length;
+
+      const barPct = n => Math.max(8, Math.round((n / Math.max(1, totalPt)) * 100));
+
+      document.getElementById('main-view').innerHTML = `
+        <!-- Banner chào mừng tông đỏ rượu nhẹ -->
+        <div class="rounded-2xl bg-gradient-to-r from-[#5c1624] via-[#751c2e] to-[#881337] text-white p-6 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div>
+            <div class="text-xs text-rose-200 mb-1">Xin chào,</div>
+            <div class="text-2xl font-bold tracking-tight">${state.settings.roleMode === 'admin' ? 'Quản trị viên Hệ thống' : 'BS. Nguyễn Minh Quân'}</div>
+            <div class="text-xs text-rose-100/85 mt-1.5">${state.settings.clinicName} • Hỗ trợ theo dõi UAS7 &amp; Sàng lọc nguy cơ phản vệ</div>
+          </div>
+          <div class="grid grid-cols-3 gap-3">
+            <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl px-4 py-3 text-center min-w-[92px]">
+              <div class="text-xl font-bold">${totalPt}</div>
+              <div class="text-[11px] text-rose-100/85 mt-0.5">Bệnh nhân</div>
+            </div>
+            <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl px-4 py-3 text-center min-w-[92px]">
+              <div class="text-xl font-bold">${severeCount}</div>
+              <div class="text-[11px] text-rose-100/85 mt-0.5">Cần theo dõi sát</div>
+            </div>
+            <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl px-4 py-3 text-center min-w-[92px]">
+              <div class="text-xl font-bold">${staffCount}</div>
+              <div class="text-[11px] text-rose-100/85 mt-0.5">Nhân viên trực</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Thẻ chỉ số nhanh -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-white rounded-xl p-4 border border-rose-100 border-t-4 border-t-[#881337] shadow-sm">
+            <div class="w-8 h-8 rounded-lg bg-rose-50 text-[#881337] flex items-center justify-center mb-3">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            </div>
+            <div class="text-2xl font-bold text-slate-900">${totalPt}</div>
+            <div class="text-xs text-slate-500 mt-0.5">Tổng hồ sơ bệnh nhân</div>
+          </div>
+
+          <div class="bg-white rounded-xl p-4 border border-rose-100 border-t-4 border-t-rose-500 shadow-sm">
+            <div class="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center mb-3">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <div class="text-2xl font-bold text-rose-700">${severeCount}</div>
+            <div class="text-xs text-slate-500 mt-0.5">Ca mức độ nặng / Phản vệ</div>
+          </div>
+
+          <div class="bg-white rounded-xl p-4 border border-rose-100 border-t-4 border-t-amber-500 shadow-sm">
+            <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center mb-3">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="13" y2="13"/></svg>
+            </div>
+            <div class="text-2xl font-bold text-slate-900">${rxCount}</div>
+            <div class="text-xs text-slate-500 mt-0.5">Đơn thuốc đã phát hành</div>
+          </div>
+
+          <div class="bg-white rounded-xl p-4 border border-rose-100 border-t-4 border-t-emerald-600 shadow-sm">
+            <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center mb-3">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <div class="text-2xl font-bold text-slate-900">${state.labs.length}</div>
+            <div class="text-xs text-slate-500 mt-0.5">Chỉ định Xét nghiệm &amp; CĐHA</div>
+          </div>
+        </div>
+
+        <!-- Hàng 2: Biểu đồ ngang + Thao tác nhanh -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+          <div class="lg:col-span-2 bg-white rounded-2xl p-5 border border-rose-100 shadow-sm">
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="text-sm font-bold text-slate-800">Phân bố mức độ hoạt động bệnh (UAS7)</h2>
+              <button onclick="switchTab('reports')" class="text-xs font-semibold text-[#881337] hover:underline">Xem báo cáo chi tiết</button>
+            </div>
+            <div class="space-y-4 text-xs">
+              <div>
+                <div class="flex justify-between mb-1"><span class="font-medium text-slate-700">Mức độ nặng (UAS7 ≥ 28)</span><span class="font-semibold text-rose-800">${cSevere} bệnh nhân</span></div>
+                <div class="w-full h-6 bg-rose-50 rounded-lg overflow-hidden">
+                  <div style="width:${barPct(cSevere)}%" class="h-full bg-gradient-to-r from-[#881337] to-rose-600 rounded-lg transition-all"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-1"><span class="font-medium text-slate-700">Mức độ trung bình (UAS7 16–27)</span><span class="font-semibold text-amber-800">${cMod} bệnh nhân</span></div>
+                <div class="w-full h-6 bg-amber-50/70 rounded-lg overflow-hidden">
+                  <div style="width:${barPct(cMod)}%" class="h-full bg-amber-500 rounded-lg transition-all"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-1"><span class="font-medium text-slate-700">Mức độ nhẹ (UAS7 7–15)</span><span class="font-semibold text-sky-800">${cMild} bệnh nhân</span></div>
+                <div class="w-full h-6 bg-sky-50/70 rounded-lg overflow-hidden">
+                  <div style="width:${barPct(cMild)}%" class="h-full bg-sky-600 rounded-lg transition-all"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-1"><span class="font-medium text-slate-700">Kiểm soát tốt (UAS7 0–6)</span><span class="font-semibold text-emerald-800">${cControlled} bệnh nhân</span></div>
+                <div class="w-full h-6 bg-emerald-50/70 rounded-lg overflow-hidden">
+                  <div style="width:${barPct(cControlled)}%" class="h-full bg-emerald-600 rounded-lg transition-all"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Thao tác nhanh -->
+          <div class="bg-white rounded-2xl p-5 border border-rose-100 shadow-sm flex flex-col justify-between">
+            <div>
+              <h2 class="text-sm font-bold text-slate-800 mb-4">Thao tác nhanh</h2>
+              <div class="grid grid-cols-2 gap-3">
+                <button onclick="switchTab('patients')" class="p-3.5 rounded-xl border border-rose-100 bg-rose-50/40 hover:bg-rose-50 transition flex flex-col items-center justify-center text-center gap-2">
+                  <div class="w-9 h-9 rounded-lg bg-white text-[#881337] border border-rose-100 flex items-center justify-center">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                  </div>
+                  <span class="text-xs font-semibold text-slate-800">Danh sách bệnh nhân</span>
+                </button>
+
+                <button onclick="switchTab('records')" class="p-3.5 rounded-xl border border-rose-100 bg-rose-50/40 hover:bg-rose-50 transition flex flex-col items-center justify-center text-center gap-2">
+                  <div class="w-9 h-9 rounded-lg bg-white text-[#881337] border border-rose-100 flex items-center justify-center">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  </div>
+                  <span class="text-xs font-semibold text-slate-800">Khám &amp; Sàng lọc</span>
+                </button>
+
+                <button onclick="switchTab('uas7')" class="p-3.5 rounded-xl border border-rose-100 bg-rose-50/40 hover:bg-rose-50 transition flex flex-col items-center justify-center text-center gap-2">
+                  <div class="w-9 h-9 rounded-lg bg-white text-[#881337] border border-rose-100 flex items-center justify-center">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/></svg>
+                  </div>
+                  <span class="text-xs font-semibold text-slate-800">Chấm điểm UAS7</span>
+                </button>
+
+                <button onclick="switchTab('prescriptions')" class="p-3.5 rounded-xl border border-rose-100 bg-rose-50/40 hover:bg-rose-50 transition flex flex-col items-center justify-center text-center gap-2">
+                  <div class="w-9 h-9 rounded-lg bg-white text-[#881337] border border-rose-100 flex items-center justify-center">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="7" y1="9" x2="17" y2="9"/></svg>
+                  </div>
+                  <span class="text-xs font-semibold text-slate-800">Kê đơn điện tử</span>
+                </button>
+              </div>
+            </div>
+            <button onclick="openModal('modal-add-patient')" class="mt-4 w-full py-2.5 rounded-xl bg-[#881337] hover:bg-[#70102d] text-white text-xs font-semibold transition">
+              + Tiếp nhận bệnh nhân mới
+            </button>
+          </div>
+        </div>
+
+        <!-- Bảng ca khám gần đây -->
+        <div class="bg-white rounded-2xl p-5 border border-rose-100 shadow-sm">
+          <h2 class="text-sm font-bold text-slate-800 mb-3">Danh sách theo dõi lâm sàng gần nhất</h2>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="border-b border-rose-100 text-slate-500 bg-rose-50/50">
+                  <th class="py-2.5 px-3 font-semibold">Mã BN</th>
+                  <th class="py-2.5 px-3 font-semibold">Họ và tên</th>
+                  <th class="py-2.5 px-3 font-semibold">Chẩn đoán</th>
+                  <th class="py-2.5 px-3 font-semibold">Điểm UAS7</th>
+                  <th class="py-2.5 px-3 font-semibold">Phân tầng phản vệ</th>
+                  <th class="py-2.5 px-3 font-semibold text-right">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100">
+                ${state.patients.map(p => `
+                  <tr class="hover:bg-rose-50/30">
+                    <td class="py-2.5 px-3 font-semibold text-[#881337]">${p.id}</td>
+                    <td class="py-2.5 px-3 font-medium text-slate-900">${p.name} <span class="text-slate-400">(${p.age}t, ${p.gender})</span></td>
+                    <td class="py-2.5 px-3 text-slate-600">${p.diagnosis}</td>
+                    <td class="py-2.5 px-3">${uas7Badge(p.uas7)}</td>
+                    <td class="py-2.5 px-3">${anaphylaxisBadge(p.anaphylaxisStatus)}</td>
+                    <td class="py-2.5 px-3 text-right">
+                      <button onclick="selectPatientAndGo('${p.id}', 'records')" class="px-2.5 py-1 rounded-lg bg-rose-50 text-[#881337] hover:bg-rose-100 font-semibold">Mở bệnh án</button>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    // ================= 2. DANH SÁCH BỆNH NHÂN =================
+    function renderPatients() {
+      const q = (window._ptSearch || '').toLowerCase();
+      const filterLevel = window._ptFilter || 'ALL';
+
+      const list = state.patients.filter(p => {
+        const matchText = p.id.toLowerCase().includes(q) || p.name.toLowerCase().includes(q) || p.diagnosis.toLowerCase().includes(q);
+        if (!matchText) return false;
+        if (filterLevel === 'SEVERE') return p.uas7 >= state.settings.uas7HighThreshold || p.anaphylaxisStatus !== 'THEO_DOI';
+        if (filterLevel === 'MOD') return p.uas7 >= 16 && p.uas7 < state.settings.uas7HighThreshold;
+        if (filterLevel === 'MILD') return p.uas7 < 16;
+        return true;
+      });
+
+      document.getElementById('main-view').innerHTML = `
+        <div class="bg-white rounded-2xl p-5 border border-rose-100 shadow-sm space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="flex flex-wrap items-center gap-2.5 flex-1">
+              <input type="text" value="${window._ptSearch || ''}" oninput="window._ptSearch=this.value; renderPatients();" placeholder="Tìm theo mã BN, họ tên hoặc chẩn đoán..." class="px-3.5 py-2 rounded-xl border border-slate-200 text-xs w-full sm:w-72 focus:outline-none focus:border-rose-600" />
+              <select onchange="window._ptFilter=this.value; renderPatients();" class="px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-rose-600">
+                <option value="ALL" ${filterLevel === 'ALL' ? 'selected' : ''}>Tất cả mức độ (${state.patients.length})</option>
+                <option value="SEVERE" ${filterLevel === 'SEVERE' ? 'selected' : ''}>Mức độ nặng / Có phản vệ</option>
+                <option value="MOD" ${filterLevel === 'MOD' ? 'selected' : ''}>Mức độ trung bình (UAS7 16–27)</option>
+                <option value="MILD" ${filterLevel === 'MILD' ? 'selected' : ''}>Nhẹ / Kiểm soát tốt (< 16)</option>
+              </select>
+            </div>
+            <button onclick="openModal('modal-add-patient')" class="px-4 py-2 rounded-xl bg-[#881337] hover:bg-[#70102d] text-white text-xs font-semibold">
+              + Thêm bệnh nhân mới
+            </button>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="border-b border-rose-100 bg-rose-50/50 text-slate-600">
+                  <th class="py-3 px-3 font-semibold">Mã hồ sơ</th>
+                  <th class="py-3 px-3 font-semibold">Bệnh nhân</th>
+                  <th class="py-3 px-3 font-semibold">Chẩn đoán</th>
+                  <th class="py-3 px-3 font-semibold">Tiền sử dị ứng</th>
+                  <th class="py-3 px-3 font-semibold">UAS7</th>
+                  <th class="py-3 px-3 font-semibold">Nguy cơ phản vệ</th>
+                  <th class="py-3 px-3 font-semibold text-right">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100">
+                ${list.map(p => `
+                  <tr class="hover:bg-rose-50/30">
+                    <td class="py-3 px-3 font-bold text-[#881337]">${p.id}</td>
+                    <td class="py-3 px-3">
+                      <div class="font-semibold text-slate-900">${p.name}</div>
+                      <div class="text-[11px] text-slate-400">${p.age} tuổi • ${p.gender} • Khám: ${p.lastVisit}</div>
+                    </td>
+                    <td class="py-3 px-3 text-slate-700">${p.diagnosis}</td>
+                    <td class="py-3 px-3">
+                      <span class="${p.allergy !== 'Không' ? 'text-rose-700 font-medium' : 'text-slate-400'}">${p.allergy}</span>
+                    </td>
+                    <td class="py-3 px-3">${uas7Badge(p.uas7)}</td>
+                    <td class="py-3 px-3">${anaphylaxisBadge(p.anaphylaxisStatus)}</td>
+                    <td class="py-3 px-3 text-right space-x-1">
+                      <button onclick="selectPatientAndGo('${p.id}', 'records')" class="px-2.5 py-1 rounded-lg bg-rose-50 text-[#881337] hover:bg-rose-100 font-semibold">Bệnh án</button>
+                      <button onclick="selectPatientAndGo('${p.id}', 'uas7')" class="px-2.5 py-1 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 font-medium">UAS7</button>
+                      <button onclick="selectPatientAndGo('${p.id}', 'prescriptions')" class="px-2.5 py-1 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 font-medium">Kê đơn</button>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function selectPatientAndGo(id, tab) {
+      state.selectedPatientId = id;
+      switchTab(tab);
+    }
+
+    function handleAddPatient(e) {
+      e.preventDefault();
+      const name = document.getElementById('new-pt-name').value.trim();
+      const age = parseInt(document.getElementById('new-pt-age').value, 10) || 30;
+      const gender = document.getElementById('new-pt-gender').value;
+      const diagnosis = document.getElementById('new-pt-diag').value.trim();
+      const allergy = document.getElementById('new-pt-allergy').value.trim() || 'Không';
+
+      const newId = `BN-00${state.patients.length + 1}`;
+      state.patients.unshift({
+        id: newId,
+        name,
+        age,
+        gender,
+        diagnosis,
+        allergy,
+        uas7: 14,
+        uas7Days: [
+          { day: 'Ngày 1', wheal: 1, itch: 1 },
+          { day: 'Ngày 2', wheal: 1, itch: 1 },
+          { day: 'Ngày 3', wheal: 1, itch: 1 },
+          { day: 'Ngày 4', wheal: 1, itch: 1 },
+          { day: 'Ngày 5', wheal: 1, itch: 1 },
+          { day: 'Ngày 6', wheal: 1, itch: 1 },
+          { day: 'Ngày 7', wheal: 1, itch: 1 }
+        ],
+        anaphylaxisStatus: 'THEO_DOI',
+        lastVisit: '17/11/2026',
+        records: [
+          { date: '17/11/2026', bp: '120/80 mmHg', result: 'THEO_DOI', rule: 'Tiếp nhận mới', note: 'Khởi tạo hồ sơ khám ngoại trú.' }
+        ]
+      });
+      state.selectedPatientId = newId;
+      addAuditLog(`Tiếp nhận hồ sơ mới (${newId})`, 'PATIENT_CREATED');
+      closeModal('modal-add-patient');
+      showToast(`Đã tạo hồ sơ ${newId} — ${name}`);
+      switchTab(state.currentTab);
+    }
+
+    // ================= 3. BỆNH ÁN & SÀNG LỌC PHẢN VỆ =================
+    function evaluateAnaphylaxisClinical(age, sbp, baseSbp, hasAllergen, isInhaled, skin, resp, circ, gi) {
+      let tier2 = null;
+      if (!hasAllergen && skin && (resp || circ)) {
+        tier2 = 'R01-PV: Khởi phát cấp tính da/niêm mạc kèm suy hô hấp hoặc tụt huyết áp';
+      } else if (hasAllergen && ([skin, resp, circ, gi].filter(Boolean).length >= 2)) {
+        tier2 = 'R02-PV: Tiếp xúc dị nguyên nghi ngờ kèm tổn thương từ 2 cơ quan trở lên';
+      } else if (hasAllergen && (((!isInhaled) && resp) || circ)) {
+        tier2 = 'R03-PV: Tiếp xúc dị nguyên không qua đường hít kèm triệu chứng hô hấp hoặc tuần hoàn';
+      }
+
+      if (!tier2) {
+        return {
+          status: 'THEO_DOI',
+          title: 'THEO DÕI LÂM SÀNG',
+          rule: 'Chưa đủ tiêu chuẩn phản vệ',
+          desc: 'Tiếp tục theo dõi mạch, huyết áp và diễn tiến sẩn phù tại phòng khám.'
+        };
+      }
+
+      let shock = false;
+      if (sbp !== null && !isNaN(sbp)) {
+        if (age < 1) shock = sbp < 70;
+        else if (age < 11) shock = sbp < (70 + 2 * age);
+        else if (age < 18) shock = sbp < 90;
+        else shock = (sbp < 90) || (baseSbp !== null && !isNaN(baseSbp) && baseSbp > 0 && (10 * sbp < 7 * baseSbp));
+      }
+
+      if (shock) {
+        return {
+          status: 'SOC_PHAN_VE',
+          title: 'SỐC PHẢN VỆ (MỨC ĐỘ NGUY KỊCH)',
+          rule: 'R-SOC: Đạt tiêu chuẩn phản vệ kèm tụt huyết áp theo ngưỡng tuổi / giảm > 30% HATT nền',
+          desc: 'Cần kích hoạt quy trình xử trí cấp cứu phản vệ ngay lập tức tại cơ sở y tế.'
+        };
+      }
+
+      return {
+        status: 'PHAN_VE',
+        title: 'PHẢN VỆ',
+        rule: tier2,
+        desc: 'Cần theo dõi sát sinh hiệu liên tục và xử trí theo phác đồ phản vệ của Bộ Y tế.'
+      };
+    }
+
+    function renderRecords() {
+      const pt = getSelectedPatient();
+      document.getElementById('main-view').innerHTML = `
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+          <!-- Cột trái: Thông tin bệnh nhân & Lịch sử khám -->
+          <div class="space-y-5">
+            <div class="bg-white rounded-2xl p-5 border border-rose-100 shadow-sm space-y-3">
+              <label class="block text-xs font-semibold text-slate-600">Chọn hồ sơ bệnh nhân</label>
+              <select onchange="state.selectedPatientId=this.value; renderRecords();" class="w-full px-3 py-2 rounded-xl border border-rose-200 bg-rose-50/40 text-xs font-semibold text-slate-900 focus:outline-none">
+                ${state.patients.map(p => `<option value="${p.id}" ${p.id === pt.id ? 'selected' : ''}>${p.id} — ${p.name} (${p.age} tuổi)</option>`).join('')}
+              </select>
+
+              <div class="pt-2 border-t border-slate-100 space-y-2 text-xs">
+                <div class="flex justify-between"><span class="text-slate-500">Chẩn đoán:</span><span class="font-semibold text-slate-800 text-right">${pt.diagnosis}</span></div>
+                <div class="flex justify-between"><span class="text-slate-500">Tiền sử dị ứng:</span><span class="font-semibold text-rose-700 text-right">${pt.allergy}</span></div>
+                <div class="flex justify-between"><span class="text-slate-500">Điểm UAS7 hiện tại:</span><span>${uas7Badge(pt.uas7)}</span></div>
+                <div class="flex justify-between"><span class="text-slate-500">Phân tầng hiện tại:</span><span>${anaphylaxisBadge(pt.anaphylaxisStatus)}</span></div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-5 border border-rose-100 shadow-sm">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Lịch sử diễn biến bệnh án</h3>
+              <div class="space-y-3">
+                ${pt.records.map(r => `
+                  <div class="p-3 rounded-xl bg-rose-50/40 border border-rose-100 text-xs space-y-1">
+                    <div class="flex items-center justify-between">
+                      <span class="font-bold text-slate-800">${r.date}</span>
+                      ${anaphylaxisBadge(r.result)}
+                    </div>
+                    <div class="text-[11px] text-slate-500">Huyết áp: <strong class="text-slate-700">${r.bp}</strong></div>
+                    <div class="text-[11px] font-medium text-[#881337]">${r.rule}</div>
+                    <p class="text-slate-600 pt-1">${r.note}</p>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+
+          <!-- Cột phải: Phiếu khám & Sàng lọc nguy cơ phản vệ -->
+          <div class="lg:col-span-2 bg-white rounded-2xl p-6 border border-rose-100 shadow-sm space-y-5">
+            <div class="flex items-center justify-between border-b border-rose-100 pb-3">
+              <div>
+                <h2 class="text-base font-bold text-slate-900">Phiếu khám lâm sàng &amp; Sàng lọc nguy cơ phản vệ</h2>
+                <p class="text-xs text-slate-500 mt-0.5">Đánh giá tự động theo tiêu chuẩn lâm sàng WAO/EAACI dành cho bác sĩ</p>
+              </div>
+              <span class="px-2.5 py-1 rounded-lg bg-rose-50 text-[#881337] text-xs font-semibold">${pt.id}</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Tuổi bệnh nhân</label>
+                <input id="rec-age" type="number" step="0.1" min="0" max="120" value="${pt.age}" oninput="previewAnaphylaxis()" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:border-rose-600" />
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Huyết áp tâm thu (mmHg)</label>
+                <input id="rec-sbp" type="number" min="1" max="300" value="115" oninput="previewAnaphylaxis()" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:border-rose-600" />
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">HATT nền (nếu biết)</label>
+                <input id="rec-base-sbp" type="number" min="1" max="300" placeholder="Bỏ trống nếu không rõ" oninput="previewAnaphylaxis()" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:border-rose-600" />
+              </div>
+            </div>
+
+            <div>
+              <div class="text-xs font-bold text-slate-700 mb-2.5">Yếu tố tiếp xúc &amp; Biểu hiện cơ quan</div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+                <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 hover:bg-rose-50/40 cursor-pointer">
+                  <input id="rec-allergen" type="checkbox" onchange="previewAnaphylaxis()" class="w-4 h-4 accent-[#881337]" />
+                  <span>Có tiếp xúc dị nguyên nghi ngờ (thuốc, thức ăn, nọc côn trùng)</span>
+                </label>
+                <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 hover:bg-rose-50/40 cursor-pointer">
+                  <input id="rec-inhaled" type="checkbox" onchange="previewAnaphylaxis()" class="w-4 h-4 accent-[#881337]" />
+                  <span>Dị nguyên tiếp xúc qua đường hít (phấn hoa, bụi)</span>
+                </label>
+                <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 hover:bg-rose-50/40 cursor-pointer">
+                  <input id="rec-skin" type="checkbox" checked onchange="previewAnaphylaxis()" class="w-4 h-4 accent-[#881337]" />
+                  <span>Tổn thương da / niêm mạc (mày đay, phù mạch, đỏ bừng)</span>
+                </label>
+                <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 hover:bg-rose-50/40 cursor-pointer">
+                  <input id="rec-resp" type="checkbox" onchange="previewAnaphylaxis()" class="w-4 h-4 accent-[#881337]" />
+                  <span>Triệu chứng hô hấp (khó thở, khò khè, co thắt thanh quản)</span>
+                </label>
+                <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 hover:bg-rose-50/40 cursor-pointer">
+                  <input id="rec-circ" type="checkbox" onchange="previewAnaphylaxis()" class="w-4 h-4 accent-[#881337]" />
+                  <span>Triệu chứng tuần hoàn (tụt huyết áp, choáng váng, ngất)</span>
+                </label>
+                <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 hover:bg-rose-50/40 cursor-pointer">
+                  <input id="rec-gi" type="checkbox" onchange="previewAnaphylaxis()" class="w-4 h-4 accent-[#881337]" />
+                  <span>Triệu chứng tiêu hóa nặng (đau quặn bụng, nôn nhiều)</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Khung kết quả đánh giá trực tiếp -->
+            <div id="rec-result-box" class="p-4 rounded-xl border border-rose-200 bg-rose-50/60"></div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Ghi chú diễn biến lâm sàng của bác sĩ</label>
+              <textarea id="rec-note" rows="2" placeholder="Nhập nhận xét lâm sàng..." class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-rose-600">Bệnh nhân tỉnh táo, sẩn phù rải rác vùng cẳng tay, sinh hiệu ổn định.</textarea>
+            </div>
+
+            <div class="flex justify-end gap-2.5">
+              <button onclick="saveClinicalRecord()" class="px-5 py-2.5 rounded-xl bg-[#881337] hover:bg-[#70102d] text-white text-xs font-semibold shadow-sm">
+                Lưu kết quả vào bệnh án
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      previewAnaphylaxis();
+    }
+
+    function previewAnaphylaxis() {
+      const age = parseFloat(document.getElementById('rec-age').value);
+      const sbpRaw = document.getElementById('rec-sbp').value;
+      const baseRaw = document.getElementById('rec-base-sbp').value;
+      const sbp = sbpRaw === '' ? null : parseFloat(sbpRaw);
+      const baseSbp = baseRaw === '' ? null : parseFloat(baseRaw);
+
+      const res = evaluateAnaphylaxisClinical(
+        age,
+        sbp,
+        baseSbp,
+        document.getElementById('rec-allergen').checked,
+        document.getElementById('rec-inhaled').checked,
+        document.getElementById('rec-skin').checked,
+        document.getElementById('rec-resp').checked,
+        document.getElementById('rec-circ').checked,
+        document.getElementById('rec-gi').checked
+      );
+
+      window._lastEval = res;
+      const box = document.getElementById('rec-result-box');
+      if (res.status === 'SOC_PHAN_VE') {
+        box.className = 'p-4 rounded-xl border-2 border-red-600 bg-red-50 text-red-950 space-y-1';
+      } else if (res.status === 'PHAN_VE') {
+        box.className = 'p-4 rounded-xl border border-rose-300 bg-rose-50 text-rose-950 space-y-1';
+      } else {
+        box.className = 'p-4 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 space-y-1';
+      }
+      box.innerHTML = `
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold uppercase tracking-wide">${res.title}</span>
+          ${anaphylaxisBadge(res.status)}
+        </div>
+        <div class="text-xs font-semibold">${res.rule}</div>
+        <div class="text-xs opacity-90">${res.desc}</div>
+      `;
+    }
+
+    function saveClinicalRecord() {
+      const pt = getSelectedPatient();
+      const sbp = document.getElementById('rec-sbp').value || 'Không đo';
+      const base = document.getElementById('rec-base-sbp').value;
+      const note = document.getElementById('rec-note').value.trim() || 'Đã khám và đánh giá lâm sàng.';
+      const res = window._lastEval;
+
+      pt.anaphylaxisStatus = res.status;
+      pt.lastVisit = '17/11/2026';
+      pt.records.unshift({
+        date: '17/11/2026',
+        bp: base ? `${sbp} mmHg (Nền: ${base} mmHg)` : `${sbp} mmHg`,
+        result: res.status,
+        rule: res.rule,
+        note
+      });
+
+      addAuditLog(`Cập nhật bệnh án & sàng lọc (${pt.id})`, `CLASSIFIED_${res.status}`);
+      showToast(`Đã lưu kết quả khám cho ${pt.name}`);
+      renderRecords();
+    }
+
+    // ================= 4. THEO DÕI UAS7 =================
+    function renderUAS7() {
+      const pt = getSelectedPatient();
+      const total = pt.uas7Days.reduce((acc, d) => acc + d.wheal + d.itch, 0);
+
+      document.getElementById('main-view').innerHTML = `
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+          <!-- Bảng chấm điểm 7 ngày -->
+          <div class="lg:col-span-2 bg-white rounded-2xl p-5 border border-rose-100 shadow-sm space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-rose-100 pb-3">
+              <div>
+                <h2 class="text-base font-bold text-slate-900">Nhật ký đánh giá hoạt động mày đay 7 ngày (UAS7)</h2>
+                <p class="text-xs text-slate-500">Thang điểm mỗi ngày: Sẩn phù (0–3) + Ngứa (0–3) = Tối đa 6 điểm/ngày</p>
+              </div>
+              <select onchange="state.selectedPatientId=this.value; renderUAS7();" class="px-3 py-2 rounded-xl border border-rose-200 bg-rose-50/40 text-xs font-semibold">
+                ${state.patients.map(p => `<option value="${p.id}" ${p.id === pt.id ? 'selected' : ''}>${p.id} — ${p.name}</option>`).join('')}
+              </select>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="bg-rose-50/60 border-b border-rose-100 text-slate-600">
+                    <th class="py-2.5 px-3 font-semibold">Ngày theo dõi</th>
+                    <th class="py-2.5 px-3 font-semibold">Mức độ sẩn phù (0–3)</th>
+                    <th class="py-2.5 px-3 font-semibold">Mức độ ngứa (0–3)</th>
+                    <th class="py-2.5 px-3 font-semibold text-center">Tổng ngày</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                  ${pt.uas7Days.map((d, idx) => `
+                    <tr>
+                      <td class="py-2.5 px-3 font-semibold text-slate-800">${d.day}</td>
+                      <td class="py-2.5 px-3">
+                        <select onchange="updateUas7Cell(${idx}, 'wheal', this.value)" class="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white">
+                          <option value="0" ${d.wheal === 0 ? 'selected' : ''}>0 — Không có sẩn phù</option>
+                          <option value="1" ${d.wheal === 1 ? 'selected' : ''}>1 — Nhẹ (< 20 sẩn/24h)</option>
+                          <option value="2" ${d.wheal === 2 ? 'selected' : ''}>2 — Trung bình (20–50 sẩn/24h)</option>
+                          <option value="3" ${d.wheal === 3 ? 'selected' : ''}>3 — Nặng (> 50 sẩn/24h)</option>
+                        </select>
+                      </td>
+                      <td class="py-2.5 px-3">
+                        <select onchange="updateUas7Cell(${idx}, 'itch', this.value)" class="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white">
+                          <option value="0" ${d.itch === 0 ? 'selected' : ''}>0 — Không ngứa</option>
+                          <option value="1" ${d.itch === 1 ? 'selected' : ''}>1 — Nhẹ (không gây khó chịu)</option>
+                          <option value="2" ${d.itch === 2 ? 'selected' : ''}>2 — Trung bình (ảnh hưởng sinh hoạt)</option>
+                          <option value="3" ${d.itch === 3 ? 'selected' : ''}>3 — Nặng (mất ngủ / cản trở nhiều)</option>
+                        </select>
+                      </td>
+                      <td class="py-2.5 px-3 text-center font-bold text-[#881337]">${d.wheal + d.itch} / 6</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+
+            <div class="flex items-center justify-between pt-2">
+              <div class="text-xs text-slate-600">Tổng điểm tuần hiện tại: <strong class="text-base text-[#881337]">${total} / 42</strong> ${uas7Badge(total)}</div>
+              <button onclick="saveUas7Score()" class="px-5 py-2.5 rounded-xl bg-[#881337] hover:bg-[#70102d] text-white text-xs font-semibold">
+                Lưu điểm UAS7 vào hồ sơ
+              </button>
+            </div>
+          </div>
+
+          <!-- Biểu đồ cột diễn tiến 7 ngày -->
+          <div class="bg-white rounded-2xl p-5 border border-rose-100 shadow-sm flex flex-col justify-between">
+            <div>
+              <h3 class="text-sm font-bold text-slate-800 mb-1">Biểu đồ diễn tiến 7 ngày</h3>
+              <p class="text-xs text-slate-500 mb-5">Tổng điểm sẩn phù + ngứa từng ngày (tối đa 6)</p>
+
+              <div class="h-48 flex items-end justify-between gap-2 px-2 pt-4 border-b border-slate-200">
+                ${pt.uas7Days.map(d => {
+                  const sum = d.wheal + d.itch;
+                  const hPct = Math.round((sum / 6) * 100);
+                  return `
+                    <div class="flex-1 flex flex-col items-center gap-1.5">
+                      <span class="text-[11px] font-bold text-slate-700">${sum}</span>
+                      <div class="w-full bg-rose-50 rounded-t-lg h-36 flex items-end overflow-hidden">
+                        <div style="height:${hPct}%" class="w-full bg-gradient-to-t from-[#881337] to-rose-500 rounded-t-lg transition-all"></div>
+                      </div>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+              <div class="flex justify-between gap-2 px-2 pt-2 text-[11px] font-medium text-slate-500">
+                ${pt.uas7Days.map((_, i) => `<span class="flex-1 text-center">N${i + 1}</span>`).join('')}
+              </div>
+            </div>
+
+            <div class="mt-6 p-3.5 rounded-xl bg-rose-50/70 border border-rose-100 text-xs space-y-1">
+              <div class="font-bold text-[#881337]">Ngưỡng đánh giá lâm sàng</div>
+              <div class="text-slate-600">• 0–6: Kiểm soát tốt | 7–15: Nhẹ</div>
+              <div class="text-slate-600">• 16–27: Trung bình | ≥ ${state.settings.uas7HighThreshold}: Nặng (cần cân nhắc nâng bậc)</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function updateUas7Cell(dayIdx, field, val) {
+      const pt = getSelectedPatient();
+      pt.uas7Days[dayIdx][field] = parseInt(val, 10);
+      renderUAS7();
+    }
+
+    function saveUas7Score() {
+      const pt = getSelectedPatient();
+      pt.uas7 = pt.uas7Days.reduce((acc, d) => acc + d.wheal + d.itch, 0);
+      addAuditLog(`Cập nhật điểm UAS7=${pt.uas7} (${pt.id})`, 'UAS7_UPDATED');
+      showToast(`Đã cập nhật điểm UAS7 = ${pt.uas7}/42 cho ${pt.name}`);
+      renderUAS7();
+    }
+
+    // ================= 5. ẢNH TỔN THƯƠNG =================
+    function renderPhotos() {
+      const pt = getSelectedPatient();
+      const ptPhotos = state.photos.filter(ph => ph.patientId === pt.id);
+
+      document.getElementById('main-view').innerHTML = `
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+          <!-- Form tải ảnh tổn thương -->
+          <div class="bg-white rounded-2xl p-5 border border-rose-100 shadow-sm space-y-3.5 text-xs">
+            <h2 class="text-sm font-bold text-slate-900">Thêm ảnh tổn thương da</h2>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Bệnh nhân</label>
+              <select onchange="state.selectedPatientId=this.value; renderPhotos();" class="w-full px-3 py-2 rounded-xl border border-rose-200 bg-rose-50/40 font-semibold">
+                ${state.patients.map(p => `<option value="${p.id}" ${p.id === pt.id ? 'selected' : ''}>${p.id} — ${p.name}</option>`).join('')}
+              </select>
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Vùng cơ thể tổn thương</label>
+              <select id="ph-region" class="w-full px-3 py-2 rounded-xl border border-slate-200">
+                <option value="Cẳng tay / Cánh tay">Cẳng tay / Cánh tay</option>
+                <option value="Vùng lưng">Vùng lưng</option>
+                <option value="Vùng ngực / Bụng">Vùng ngực / Bụng</option>
+                <option value="Vùng mặt / Cổ">Vùng mặt / Cổ</option>
+                <option value="Đùi / Cẳng chân">Đùi / Cẳng chân</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Mức độ ban đỏ &amp; phù nề</label>
+              <select id="ph-erythema" class="w-full px-3 py-2 rounded-xl border border-slate-200">
+                <option value="Nhẹ">Nhẹ (ban hồng nhạt)</option>
+                <option value="Trung bình" selected>Trung bình (sẩn phù rõ)</option>
+                <option value="Nặng">Nặng (mảng đỏ lan tỏa)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Chọn tệp ảnh từ máy (tùy chọn)</label>
+              <input id="ph-file" type="file" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-rose-50 file:text-[#881337] file:font-semibold" />
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Mô tả hình thái tổn thương</label>
+              <textarea id="ph-note" rows="2" class="w-full px-3 py-2 rounded-xl border border-slate-200" placeholder="Ví dụ: Sẩn phù rải rác, ranh giới rõ...">Sẩn phù nổi gờ trên mặt da, viền đỏ nhẹ xung quanh.</textarea>
+            </div>
+            <button onclick="handleAddPhoto()" class="w-full py-2.5 rounded-xl bg-[#881337] hover:bg-[#70102d] text-white font-semibold">
+              Lưu ảnh vào hồ sơ
+            </button>
+          </div>
+
+          <!-- Thư viện ảnh tổn thương -->
+          <div class="lg:col-span-2 bg-white rounded-2xl p-5 border border-rose-100 shadow-sm space-y-4">
+            <div class="flex items-center justify-between">
+              <h2 class="text-sm font-bold text-slate-900">Thư viện ảnh theo dõi — ${pt.name} (${ptPhotos.length} ảnh)</h2>
+            </div>
+
+            ${ptPhotos.length === 0 ? `
+              <div class="p-10 text-center rounded-xl border border-dashed border-rose-200 text-xs text-slate-500">
+                Chưa có ảnh tổn thương nào được lưu cho bệnh nhân này.
+              </div>
+            ` : `
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                ${ptPhotos.map(ph => `
+                  <div class="rounded-xl border border-rose-100 overflow-hidden bg-rose-50/20">
+                    ${ph.dataUrl ? `
+                      <img src="${ph.dataUrl}" alt="${ph.region}" class="w-full h-44 object-cover bg-slate-100" />
+                    ` : `
+                      <div class="w-full h-44 bg-[#f5e1df] flex items-center justify-center relative">
+                        <svg viewBox="0 0 120 80" class="w-full h-full">
+                          <rect width="120" height="80" fill="#f6e3e1"/>
+                          ${(ph.spots || [[45,40,16],[72,48,13]]).map(s => `
+                            <circle cx="${s[0]}" cy="${s[1]}" r="${s[2]}" fill="#e11d48" fill-opacity="0.22"/>
+                            <circle cx="${s[0]}" cy="${s[1]}" r="${Math.max(5, s[2]-5)}" fill="#fda4af" fill-opacity="0.75"/>
+                          `).join('')}
+                        </svg>
+                        <span class="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-white/85 text-[10px] font-medium text-slate-600">Ảnh minh họa vùng da</span>
+                      </div>
+                    `}
+                    <div class="p-3.5 text-xs space-y-1">
+                      <div class="flex items-center justify-between">
+                        <span class="font-bold text-slate-900">${ph.region}</span>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-rose-100 text-rose-800">${ph.erythema}</span>
+                      </div>
+                      <div class="text-[11px] text-slate-400">Ngày chụp: ${ph.date}</div>
+                      <p class="text-slate-600 pt-1">${ph.note}</p>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            `}
+          </div>
+        </div>
+      `;
+    }
+
+    function handleAddPhoto() {
+      const pt = getSelectedPatient();
+      const region = document.getElementById('ph-region').value;
+      const erythema = document.getElementById('ph-erythema').value;
+      const note = document.getElementById('ph-note').value.trim();
+      const fileInput = document.getElementById('ph-file');
+
+      const saveItem = (dataUrl) => {
+        state.photos.unshift({
+          id: `IMG-0${state.photos.length + 1}`,
+          patientId: pt.id,
+          region,
+          erythema,
+          date: '17/11/2026',
+          note,
+          dataUrl,
+          spots: [[35, 38, 17], [65, 45, 20], [50, 62, 14]]
+        });
+        addAuditLog(`Tải ảnh tổn thương (${pt.id})`, 'PHOTO_UPLOADED');
+        showToast('Đã lưu ảnh tổn thương vào hồ sơ.');
+        renderPhotos();
+      };
+
+      if (fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = e => saveItem(e.target.result);
+        reader.readAsDataURL(fileInput.files[0]);
+      } else {
+        saveItem(null);
+      }
+    }
+
+    // ================= 6. ĐƠN THUỐC ĐIỆN TỬ =================
+    window._draftRx = [
+      { name: 'Bilastine 20mg', dose: 'Sáng 1 viên, Tối 1 viên (uống trước ăn 1 giờ)', days: 14 }
+    ];
+
+    function renderPrescriptions() {
+      const pt = getSelectedPatient();
+      const hasAllergy = pt.allergy && pt.allergy !== 'Không';
+
+      document.getElementById('main-view').innerHTML = `
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+          <!-- Kê đơn mới -->
+          <div class="lg:col-span-2 bg-white rounded-2xl p-5 border border-rose-100 shadow-sm space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-rose-100 pb-3">
+              <div>
+                <h2 class="text-base font-bold text-slate-900">Kê đơn thuốc điện tử</h2>
+                <p class="text-xs text-slate-500">Tự động đối chiếu tiền sử dị ứng thuốc của bệnh nhân</p>
+              </div>
+              <select onchange="state.selectedPatientId=this.value; renderPrescriptions();" class="px-3 py-2 rounded-xl border border-rose-200 bg-rose-50/40 text-xs font-semibold">
+                ${state.patients.map(p => `<option value="${p.id}" ${p.id === pt.id ? 'selected' : ''}>${p.id} — ${p.name}</option>`).join('')}
+              </select>
+            </div>
+
+            ${state.settings.allergyAlertEnabled && hasAllergy ? `
+              <div class="p-3.5 rounded-xl bg-rose-50 border border-rose-300 text-rose-900 text-xs flex items-center gap-2.5">
+                <span class="font-bold px-2 py-0.5 rounded bg-rose-700 text-white text-[10px]">CẢNH BÁO DỊ ỨNG</span>
+                <span>Bệnh nhân có tiền sử: <strong>${pt.allergy}</strong>. Kiểm tra kỹ hoạt chất trước khi phát hành đơn.</span>
+              </div>
+            ` : ''}
+
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-2.5 text-xs">
+              <select id="rx-drug" class="sm:col-span-2 px-3 py-2 rounded-xl border border-slate-200">
+                <option value="Bilastine 20mg">Bilastine 20mg (Kháng Histamin H1 thế hệ 2)</option>
+                <option value="Fexofenadine 180mg">Fexofenadine 180mg</option>
+                <option value="Cetirizine 10mg">Cetirizine 10mg</option>
+                <option value="Montelukast 10mg">Montelukast 10mg</option>
+                <option value="Methylprednisolone 16mg">Methylprednisolone 16mg (Đợt ngắn ngày)</option>
+                <option value="Kem dưỡng ẩm phục hồi hàng rào da">Kem dưỡng ẩm phục hồi hàng rào da</option>
+              </select>
+              <input id="rx-dose" type="text" value="Sáng 1 viên, Tối 1 viên" placeholder="Liều dùng" class="px-3 py-2 rounded-xl border border-slate-200" />
+              <div class="flex gap-2">
+                <input id="rx-days" type="number" min="1" max="60" value="14" class="w-16 px-2.5 py-2 rounded-xl border border-slate-200 text-center" title="Số ngày" />
+                <button onclick="addRxItem()" class="flex-1 px-3 py-2 rounded-xl bg-rose-100 text-[#881337] hover:bg-rose-200 font-semibold">+ Thêm</button>
+              </div>
+            </div>
+
+            <div class="overflow-x-auto border border-slate-100 rounded-xl">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="bg-rose-50/60 border-b border-rose-100 text-slate-600">
+                    <th class="py-2.5 px-3 font-semibold">STT</th>
+                    <th class="py-2.5 px-3 font-semibold">Tên thuốc / Hoạt chất</th>
+                    <th class="py-2.5 px-3 font-semibold">Cách dùng &amp; Liều lượng</th>
+                    <th class="py-2.5 px-3 font-semibold text-center">Số ngày</th>
+                    <th class="py-2.5 px-3 text-right"></th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                  ${window._draftRx.map((item, idx) => `
+                    <tr>
+                      <td class="py-2.5 px-3 text-slate-500">${idx + 1}</td>
+                      <td class="py-2.5 px-3 font-semibold text-slate-900">${item.name}</td>
+                      <td class="py-2.5 px-3 text-slate-600">${item.dose}</td>
+                      <td class="py-2.5 px-3 text-center font-medium">${item.days} ngày</td>
+                      <td class="py-2.5 px-3 text-right">
+                        <button onclick="window._draftRx.splice(${idx}, 1); renderPrescriptions();" class="text-rose-600 hover:underline">Xóa</button>
+                      </td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+
+            <div class="flex justify-end gap-2.5 pt-2 no-print">
+              <button onclick="window.print()" class="px-4 py-2 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-semibold">In đơn thuốc</button>
+              <button onclick="issuePrescription()" class="px-5 py-2 rounded-xl bg-[#881337] hover:bg-[#70102d] text-white text-xs font-semibold">Phát hành đơn điện tử</button>
+            </div>
+          </div>
+
+          <!-- Lịch sử đơn thuốc đã phát hành -->
+          <div class="bg-white rounded-2xl p-5 border border-rose-100 shadow-sm space-y-3">
+            <h3 class="text-sm font-bold text-slate-900">Đơn thuốc đã phát hành</h3>
+            <div class="space-y-3">
+              ${state.prescriptions.map(rx => {
+                const owner = state.patients.find(p => p.id === rx.patientId);
+                return `
+                  <div class="p-3.5 rounded-xl border border-rose-100 bg-rose-50/30 text-xs space-y-1.5">
+                    <div class="flex justify-between font-bold text-[#881337]">
+                      <span>${rx.id} • ${owner ? owner.name : rx.patientId}</span>
+                      <span class="text-slate-400 font-normal">${rx.date}</span>
+                    </div>
+                    <ul class="list-disc pl-4 text-slate-700 space-y-0.5">
+                      ${rx.items.map(i => `<li><strong>${i.name}</strong> — ${i.dose} (${i.days} ngày)</li>`).join('')}
+                    </ul>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function addRxItem() {
+      const name = document.getElementById('rx-drug').value;
+      const dose = document.getElementById('rx-dose').value.trim() || 'Theo chỉ định bác sĩ';
+      const days = parseInt(document.getElementById('rx-days').value, 10) || 7;
+      window._draftRx.push({ name, dose, days });
+      renderPrescriptions();
+    }
+
+    function issuePrescription() {
+      if (window._draftRx.length === 0) {
+        showToast('Vui lòng thêm ít nhất 1 thuốc vào đơn.');
+        return;
+      }
+      const pt = getSelectedPatient();
+      const rxId = `DT-2026-0${state.prescriptions.length + 1}`;
+      state.prescriptions.unshift({
+        id: rxId,
+        patientId: pt.id,
+        date: '17/11/2026',
+        doctor: 'BS. Nguyễn Minh Quân',
+        items: JSON.parse(JSON.stringify(window._draftRx))
+      });
+      addAuditLog(`Phát hành đơn thuốc ${rxId} (${pt.id})`, 'PRESCRIPTION_ISSUED');
+      showToast(`Đã phát hành đơn thuốc ${rxId} cho ${pt.name}`);
+      renderPrescriptions();
+    }
+
+    // ================= 7. XÉT NGHIỆM & CDHA =================
+    function renderLabs() {
+      document.getElementById('main-view').innerHTML = `
+        <div class="bg-white rounded-2xl p-5 border border-rose-100 shadow-sm space-y-4">
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b border-rose-100 pb-4">
+            <div>
+              <h2 class="text-base font-bold text-slate-900">Chỉ định &amp; Kết quả Xét nghiệm — Chẩn đoán hình ảnh</h2>
+              <p class="text-xs text-slate-500">Quản lý cận lâm sàng đánh giá nguyên nhân dị ứng và tự miễn</p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2 text-xs">
+              <select id="lab-pt" class="px-3 py-2 rounded-xl border border-slate-200">
+                ${state.patients.map(p => `<option value="${p.id}">${p.id} — ${p.name}</option>`).join('')}
+              </select>
+              <select id="lab-name" class="px-3 py-2 rounded-xl border border-slate-200">
+                <option value="Test huyết thanh tự thân (ASST)">Test huyết thanh tự thân (ASST)</option>
+                <option value="Định lượng Anti-TPO & TSH">Định lượng Anti-TPO &amp; TSH</option>
+                <option value="Định lượng IgE đặc hiệu dị nguyên">Định lượng IgE đặc hiệu dị nguyên</option>
+                <option value="Siêu âm Doppler & X-quang tim phổi">Siêu âm Doppler &amp; X-quang tim phổi</option>
+              </select>
+              <button onclick="addLabOrder()" class="px-4 py-2 rounded-xl bg-[#881337] hover:bg-[#70102d] text-white font-semibold">+ Tạo chỉ định</button>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="bg-rose-50/60 border-b border-rose-100 text-slate-600">
+                  <th class="py-2.5 px-3 font-semibold">Mã phiếu</th>
+                  <th class="py-2.5 px-3 font-semibold">Bệnh nhân</th>
+                  <th class="py-2.5 px-3 font-semibold">Tên dịch vụ kỹ thuật</th>
+                  <th class="py-2.5 px-3 font-semibold">Trạng thái</th>
+                  <th class="py-2.5 px-3 font-semibold">Kết quả / Nhận định</th>
+                  <th class="py-2.5 px-3 text-right">Cập nhật</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100">
+                ${state.labs.map((l, idx) => {
+                  const pt = state.patients.find(p => p.id === l.patientId);
+                  const done = l.status === 'Đã có kết quả';
+                  return `
+                    <tr class="hover:bg-rose-50/30">
+                      <td class="py-2.5 px-3 font-bold text-[#881337]">${l.id}</td>
+                      <td class="py-2.5 px-3 font-medium text-slate-900">${pt ? pt.name : l.patientId}</td>
+                      <td class="py-2.5 px-3 text-slate-800">${l.name}</td>
+                      <td class="py-2.5 px-3">
+                        <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold ${done ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${l.status}</span>
+                      </td>
+                      <td class="py-2.5 px-3 text-slate-600">${l.result}</td>
+                      <td class="py-2.5 px-3 text-right">
+                        ${!done ? `<button onclick="completeLab(${idx})" class="px-2.5 py-1 rounded-lg bg-rose-50 text-[#881337] hover:bg-rose-100 font-semibold">Trả kết quả</button>` : '<span class="text-slate-400">Hoàn tất</span>'}
+                      </td>
+                    </tr>
+                  `;
+                }).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function addLabOrder() {
+      const patientId = document.getElementById('lab-pt').value;
+      const name = document.getElementById('lab-name').value;
+      state.labs.unshift({
+        id: `XN-${101 + state.labs.length}`,
+        patientId,
+        name,
+        type: name.includes('Siêu âm') ? 'CĐHA' : 'Xét nghiệm',
+        date: '17/11/2026',
+        status: 'Đang thực hiện',
+        result: 'Đã lấy mẫu, chờ phân tích'
+      });
+      addAuditLog(`Chỉ định cận lâm sàng (${patientId})`, 'LAB_ORDERED');
+      showToast('Đã tạo phiếu chỉ định cận lâm sàng.');
+      renderLabs();
+    }
+
+    function completeLab(idx) {
+      state.labs[idx].status = 'Đã có kết quả';
+      state.labs[idx].result = 'Chỉ số trong giới hạn ổn định, chưa ghi nhận bất thường cấp tính';
+      showToast(`Đã cập nhật kết quả cho phiếu ${state.labs[idx].id}`);
+      renderLabs();
+    }
+
+    // ================= 8. BÁO CÁO & THỐNG KÊ =================
+    function renderReports() {
+      const avgUas7 = (state.patients.reduce((s, p) => s + p.uas7, 0) / state.patients.length).toFixed(1);
+      const weeks = [
+        { label: 'Tuần 1 (Nhập viện)', score: 31.5 },
+        { label: 'Tuần 2', score: 24.0 },
+        { label: 'Tuần 3', score: 17.5 },
+        { label: 'Tuần 4 (Hiện tại)', score: parseFloat(avgUas7) }
+      ];
+
+      document.getElementById('main-view').innerHTML = `
+        <div class="space-y-5">
+          <div class="bg-white rounded-2xl p-5 border border-rose-100 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h2 class="text-base font-bold text-slate-900">Báo cáo tổng hợp &amp; Hiệu quả điều trị lâm sàng</h2>
+              <p class="text-xs text-slate-500 mt-0.5">Số liệu thống kê tự động từ hồ sơ bệnh án và nhật ký theo dõi UAS7</p>
+            </div>
+            <button onclick="exportReportCSV()" class="px-4 py-2.5 rounded-xl bg-[#881337] hover:bg-[#70102d] text-white text-xs font-semibold">
+              Xuất báo cáo CSV
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            <div class="bg-white rounded-2xl p-5 border border-rose-100 shadow-sm">
+              <h3 class="text-sm font-bold text-slate-800 mb-1">Xu hướng giảm điểm UAS7 trung bình qua 4 tuần</h3>
+              <p class="text-xs text-slate-500 mb-5">Điểm càng thấp thể hiện mức độ kiểm soát triệu chứng càng tốt</p>
+              <div class="space-y-3.5 text-xs">
+                ${weeks.map(w => {
+                  const pct = Math.round((w.score / 42) * 100);
+                  return `
+                    <div>
+                      <div class="flex justify-between mb-1">
+                        <span class="font-medium text-slate-700">${w.label}</span>
+                        <span class="font-bold text-[#881337]">${w.score} / 42 điểm</span>
+                      </div>
+                      <div class="w-full h-5 bg-rose-50 rounded-lg overflow-hidden">
+                        <div style="width:${pct}%" class="h-full bg-[#881337] rounded-lg"></div>
+                      </div>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-5 border border-rose-100 shadow-sm space-y-3">
+              <h3 class="text-sm font-bold text-slate-800">Tổng hợp phân tầng nguy cơ phản vệ</h3>
+              <div class="grid grid-cols-3 gap-3 text-center pt-2">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                  <div class="text-xl font-bold text-slate-800">${state.patients.filter(p => p.anaphylaxisStatus === 'THEO_DOI').length}</div>
+                  <div class="text-[11px] text-slate-500 mt-1">Theo dõi thường quy</div>
+                </div>
+                <div class="p-4 rounded-xl bg-rose-50 border border-rose-200">
+                  <div class="text-xl font-bold text-rose-800">${state.patients.filter(p => p.anaphylaxisStatus === 'PHAN_VE').length}</div>
+                  <div class="text-[11px] text-rose-700 mt-1">Phản vệ</div>
+                </div>
+                <div class="p-4 rounded-xl bg-red-50 border border-red-200">
+                  <div class="text-xl font-bold text-red-800">${state.patients.filter(p => p.anaphylaxisStatus === 'SOC_PHAN_VE').length}</div>
+                  <div class="text-[11px] text-red-700 mt-1">Sốc phản vệ</div>
+                </div>
+              </div>
+              <p class="text-xs text-slate-500 pt-2">
+                * Khi xuất tệp báo cáo CSV, hệ thống tự động ${state.settings.anonymizeExport ? 'ẩn danh họ tên bệnh nhân (chỉ giữ mã BN)' : 'giữ nguyên thông tin hồ sơ'} theo cấu hình bảo mật.
+              </p>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function exportReportCSV() {
+      const headers = ['Ma_BN', 'Benh_Nhan', 'Tuoi', 'Gioi_Tinh', 'Chan_Doan', 'Diem_UAS7', 'Phan_Tang_Phan_Ve'];
+      const rows = state.patients.map(p => [
+        p.id,
+        state.settings.anonymizeExport ? `Benh_Nhan_${p.id}` : p.name,
+        p.age,
+        p.gender,
+        `"${p.diagnosis}"`,
+        p.uas7,
+        p.anaphylaxisStatus
+      ].join(','));
+      const csv = '\uFEFF' + [headers.join(','), ...rows].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'bao_cao_lam_sang_dr_mayday.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+      addAuditLog('Xuất báo cáo thống kê CSV', 'REPORT_EXPORTED');
+      showToast('Đã tải xuống tệp bao_cao_lam_sang_dr_mayday.csv');
+    }
+
+    // ================= 9. NHÂN VIÊN Y TẾ =================
+    function renderStaff() {
+      document.getElementById('main-view').innerHTML = `
+        <div class="bg-white rounded-2xl p-5 border border-rose-100 shadow-sm space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-rose-100 pb-4">
+            <div>
+              <h2 class="text-base font-bold text-slate-900">Danh sách nhân viên y tế &amp; Phân công trực</h2>
+              <p class="text-xs text-slate-500">Quản lý bác sĩ điều trị, điều dưỡng theo dõi và quản trị hệ thống</p>
+            </div>
+            <div class="flex gap-2 text-xs">
+              <input id="st-name" type="text" placeholder="Họ tên nhân viên mới..." class="px-3 py-2 rounded-xl border border-slate-200" />
+              <select id="st-role" class="px-3 py-2 rounded-xl border border-slate-200">
+                <option value="Bác sĩ điều trị">Bác sĩ điều trị</option>
+                <option value="Điều dưỡng">Điều dưỡng</option>
+                <option value="Quản trị viên">Quản trị viên</option>
+              </select>
+              <button onclick="addStaffMember()" class="px-4 py-2 rounded-xl bg-[#881337] text-white font-semibold">+ Thêm</button>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="bg-rose-50/60 border-b border-rose-100 text-slate-600">
+                  <th class="py-2.5 px-3 font-semibold">Mã NV</th>
+                  <th class="py-2.5 px-3 font-semibold">Họ và tên</th>
+                  <th class="py-2.5 px-3 font-semibold">Chức danh</th>
+                  <th class="py-2.5 px-3 font-semibold">Chuyên khoa phụ trách</th>
+                  <th class="py-2.5 px-3 font-semibold">Trạng thái ca trực</th>
+                  <th class="py-2.5 px-3 text-right">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100">
+                ${state.staff.map((s, idx) => `
+                  <tr>
+                    <td class="py-2.5 px-3 font-bold text-[#881337]">${s.id}</td>
+                    <td class="py-2.5 px-3 font-semibold text-slate-900">${s.name}</td>
+                    <td class="py-2.5 px-3 text-slate-700">${s.role}</td>
+                    <td class="py-2.5 px-3 text-slate-500">${s.specialty}</td>
+                    <td class="py-2.5 px-3">
+                      <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${s.status === 'Đang trực' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600'}">${s.status}</span>
+                    </td>
+                    <td class="py-2.5 px-3 text-right">
+                      <button onclick="toggleStaffStatus(${idx})" class="px-2.5 py-1 rounded-lg border border-slate-200 hover:bg-rose-50 text-slate-700 font-medium">Đổi trạng thái</button>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function addStaffMember() {
+      const name = document.getElementById('st-name').value.trim();
+      const role = document.getElementById('st-role').value;
+      if (!name) return;
+      state.staff.push({
+        id: `NV-0${state.staff.length + 1}`,
+        name,
+        role,
+        specialty: 'Khoa Bệnh Mày Đay & Dị ứng',
+        status: 'Đang trực'
+      });
+      showToast(`Đã thêm nhân sự ${name}`);
+      renderStaff();
+    }
+
+    function toggleStaffStatus(idx) {
+      state.staff[idx].status = state.staff[idx].status === 'Đang trực' ? 'Nghỉ ca' : 'Đang trực';
+      renderStaff();
+    }
+
+    // ================= 10. QUẢN LÝ HỆ THỐNG =================
+    function renderSystem() {
+      document.getElementById('main-view').innerHTML = `
+        <div class="space-y-5">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white rounded-2xl p-4 border border-rose-100 shadow-sm">
+              <div class="text-xs text-slate-500">Bảo vệ dữ liệu định danh (Zero-PII)</div>
+              <div class="text-sm font-bold text-emerald-700 mt-1">Đang kích hoạt</div>
+              <div class="text-[11px] text-slate-500 mt-1">Không lưu thông tin cá nhân nhạy cảm trong nhật ký kiểm toán</div>
+            </div>
+            <div class="bg-white rounded-2xl p-4 border border-rose-100 shadow-sm">
+              <div class="text-xs text-slate-500">Sao lưu dữ liệu lâm sàng</div>
+              <div class="text-sm font-bold text-slate-900 mt-1">Đồng bộ tự động</div>
+              <div class="text-[11px] text-slate-500 mt-1">Lần sao lưu gần nhất: Hôm nay, 20:00</div>
+            </div>
+            <div class="bg-white rounded-2xl p-4 border border-rose-100 shadow-sm">
+              <div class="text-xs text-slate-500">Tổng bản ghi kiểm toán</div>
+              <div class="text-sm font-bold text-[#881337] mt-1">${state.auditLogs.length} sự kiện</div>
+              <div class="text-[11px] text-slate-500 mt-1">Lưu vết đầy đủ thao tác khám, kê đơn và xuất báo cáo</div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl p-5 border border-rose-100 shadow-sm space-y-3">
+            <h2 class="text-sm font-bold text-slate-900">Nhật ký kiểm toán hoạt động hệ thống (Audit Trail)</h2>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="bg-rose-50/60 border-b border-rose-100 text-slate-600">
+                    <th class="py-2.5 px-3 font-semibold">Thời gian</th>
+                    <th class="py-2.5 px-3 font-semibold">Mã người dùng (UUID)</th>
+                    <th class="py-2.5 px-3 font-semibold">Thao tác thực hiện</th>
+                    <th class="py-2.5 px-3 font-semibold">Trạng thái</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                  ${state.auditLogs.map(log => `
+                    <tr>
+                      <td class="py-2.5 px-3 text-slate-600 font-mono">${log.time}</td>
+                      <td class="py-2.5 px-3 text-slate-500 font-mono">${log.uuid}</td>
+                      <td class="py-2.5 px-3 font-medium text-slate-900">${log.action}</td>
+                      <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded bg-rose-50 text-[#881337] font-semibold text-[11px]">${log.status}</span></td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // ================= 11. MẪU PHIẾU KHÁM =================
+    function renderTemplates() {
+      document.getElementById('main-view').innerHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          ${state.templates.map((t, idx) => `
+            <div class="bg-white rounded-2xl p-5 border border-rose-100 shadow-sm flex flex-col justify-between space-y-4">
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="px-2.5 py-0.5 rounded-lg bg-rose-50 text-[#881337] text-[11px] font-bold">${t.code}</span>
+                  <span class="text-[11px] text-slate-400">Biểu mẫu chuẩn khoa</span>
+                </div>
+                <h3 class="text-sm font-bold text-slate-900">${t.title}</h3>
+                <p class="text-xs text-slate-600">${t.desc}</p>
+                <div class="pt-2">
+                  <div class="text-[11px] font-semibold text-slate-500 mb-1">Các mục nội dung chính:</div>
+                  <ul class="list-disc pl-4 text-xs text-slate-700 space-y-0.5">
+                    ${t.fields.map(f => `<li>${f}</li>`).join('')}
+                  </ul>
+                </div>
+              </div>
+              <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
+                <button onclick="previewTemplate(${idx})" class="px-3.5 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50">Xem chi tiết</button>
+                <button onclick="switchTab('records')" class="px-3.5 py-1.5 rounded-xl bg-[#881337] text-white text-xs font-semibold hover:bg-[#70102d]">Sử dụng phiếu</button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function previewTemplate(idx) {
+      const t = state.templates[idx];
+      document.getElementById('tpl-modal-title').textContent = `${t.code} — ${t.title}`;
+      document.getElementById('tpl-modal-body').innerHTML = `
+        <p class="text-xs text-slate-600">${t.desc}</p>
+        <div class="p-3.5 rounded-xl bg-rose-50/50 border border-rose-100 space-y-1.5 text-xs">
+          <div class="font-bold text-[#881337]">Cấu trúc trường thông tin trên phiếu:</div>
+          ${t.fields.map((f, i) => `<div>${i + 1}. ${f}</div>`).join('')}
+        </div>
+      `;
+      openModal('modal-template');
+    }
+
+    // ================= 12. CÀI ĐẶT HỆ THỐNG =================
+    function renderSettings() {
+      document.getElementById('main-view').innerHTML = `
+        <div class="max-w-2xl bg-white rounded-2xl p-6 border border-rose-100 shadow-sm space-y-5 text-xs">
+          <div class="border-b border-rose-100 pb-3">
+            <h2 class="text-base font-bold text-slate-900">Cài đặt hệ thống &amp; Quy tắc cảnh báo</h2>
+            <p class="text-slate-500 mt-0.5">Tùy chỉnh thông tin đơn vị sử dụng, ngưỡng cảnh báo UAS7 và vai trò làm việc</p>
+          </div>
+
+          <div class="space-y-4">
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Tên khoa / Cơ sở y tế hiển thị</label>
+              <input id="set-clinic" type="text" value="${state.settings.clinicName}" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 focus:outline-none focus:border-rose-600" />
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Ngưỡng điểm UAS7 cảnh báo mức độ nặng</label>
+                <input id="set-uas7" type="number" min="16" max="42" value="${state.settings.uas7HighThreshold}" class="w-full px-3.5 py-2 rounded-xl border border-slate-200" />
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Vai trò thao tác hiện tại</label>
+                <select id="set-role" class="w-full px-3.5 py-2 rounded-xl border border-slate-200">
+                  <option value="doctor" ${state.settings.roleMode === 'doctor' ? 'selected' : ''}>Bác sĩ điều trị (BS. Nguyễn Minh Quân)</option>
+                  <option value="admin" ${state.settings.roleMode === 'admin' ? 'selected' : ''}>Quản trị viên hệ thống (Admin)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="space-y-2.5 pt-2">
+              <label class="flex items-center justify-between p-3 rounded-xl border border-slate-200 cursor-pointer">
+                <div>
+                  <div class="font-semibold text-slate-800">Cảnh báo tiền sử dị ứng khi kê đơn điện tử</div>
+                  <div class="text-[11px] text-slate-500">Tự động hiển thị dải cảnh báo đỏ nếu bệnh nhân có dị ứng thuốc</div>
+                </div>
+                <input id="set-allergy-alert" type="checkbox" ${state.settings.allergyAlertEnabled ? 'checked' : ''} class="w-4 h-4 accent-[#881337]" />
+              </label>
+
+              <label class="flex items-center justify-between p-3 rounded-xl border border-slate-200 cursor-pointer">
+                <div>
+                  <div class="font-semibold text-slate-800">Ẩn danh hóa họ tên khi xuất báo cáo CSV</div>
+                  <div class="text-[11px] text-slate-500">Tuân thủ bảo vệ quyền riêng tư bệnh nhân khi chia sẻ dữ liệu thống kê</div>
+                </div>
+                <input id="set-anon" type="checkbox" ${state.settings.anonymizeExport ? 'checked' : ''} class="w-4 h-4 accent-[#881337]" />
+              </label>
+            </div>
+          </div>
+
+          <div class="pt-2 flex justify-end">
+            <button onclick="saveSettings()" class="px-5 py-2.5 rounded-xl bg-[#881337] hover:bg-[#70102d] text-white font-semibold">
+              Lưu cài đặt hệ thống
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function saveSettings() {
+      state.settings.clinicName = document.getElementById('set-clinic').value.trim() || 'Khoa Bệnh Mày Đay';
+      state.settings.uas7HighThreshold = parseInt(document.getElementById('set-uas7').value, 10) || 28;
+      state.settings.roleMode = document.getElementById('set-role').value;
+      state.settings.allergyAlertEnabled = document.getElementById('set-allergy-alert').checked;
+      state.settings.anonymizeExport = document.getElementById('set-anon').checked;
+
+      document.getElementById('sidebar-clinic-name').textContent = state.settings.clinicName;
+      const isAdmin = state.settings.roleMode === 'admin';
+      const uName = isAdmin ? 'Quản trị viên' : 'BS. Nguyễn Minh Quân';
+      const uRole = isAdmin ? 'Quản trị hệ thống' : 'Bác sĩ điều trị';
+      const uShort = isAdmin ? 'ADM' : 'BS';
+
+      document.getElementById('sidebar-user-name').textContent = uName;
+      document.getElementById('sidebar-user-role').textContent = uRole;
+      document.getElementById('sidebar-avatar').textContent = uShort;
+      document.getElementById('sidebar-role-badge').textContent = uShort;
+      document.getElementById('header-user-name').textContent = uName;
+      document.getElementById('header-user-role').textContent = uRole;
+      document.getElementById('header-avatar').textContent = uShort;
+
+      addAuditLog('Cập nhật cấu hình hệ thống', 'SETTINGS_SAVED');
+      showToast('Đã lưu cài đặt hệ thống.');
+      renderSettings();
+    }
+
+    // Khởi chạy mặc định tại màn hình Tổng quan
+    switchTab('overview');
+  </script>
+</body>
+</html>
