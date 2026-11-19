@@ -99,6 +99,6 @@
 - Nhóm đã bổ sung đầy đủ bảng đối chiếu `A-01`–`A-11`, bảng phân công theo alias, chuyển PR #23 sang chế độ Draft và cập nhật `ci_run_url` thực tế theo đúng hướng dẫn rà soát tự động.
 
 ## Kết quả cuối — Freeze 19/11/2026
-- Tag: bkt-2026-nhom62-rc1 · SHA: (cập nhật khi đóng băng mã nguồn ngày 19/11/2026)
+- Tag: bkt-2026-nhom62-rc1 · SHA:1b19251647d75c0d6d616ea75965bd18af69d48e
 - Trạng thái cuối từng mã AC: như 2.2 (hoàn thành 11/11 mã từ A-01 đến A-11)
 - Những việc trong timeline chưa hoàn thành và lý do: Không có
